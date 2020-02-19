@@ -1,7 +1,29 @@
 #content {
   margin-left: auto;
   margin-right: auto;
+  color: white;
   width: 650px;
+}
+
+#header {
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  width: 650px;
+}
+
+body {
+    background-color: black;
+}
+
+a {
+    color: lightskyblue;
+}
+
+img {
+    margin: 10px;
+    max-height: 200px;
+    max-width: 200px;
 }
 
 #greeting-container {
