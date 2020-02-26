@@ -17,7 +17,7 @@
  */
 function addRandomGreeting() {
   const greetings =
-      ['The passage of time is an illusion and life is a masoleum',
+      ['The passage of time is an illusion and life is a mausoleum',
        'Better to write for yourself and have no public than to write for the public and have no self',
         'Nothing happens unless first a dream',
         'Every failure is another step towards success'];
