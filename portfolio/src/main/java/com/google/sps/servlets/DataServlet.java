@@ -40,6 +40,31 @@ public class DataServlet extends HttpServlet {
     comments.add(new Comment("Joe", "test5"));
     comments.add(new Comment("Joe", "test6"));
   }
+  
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String name = getParameter(request, "name-input", "");
+    String message = getParameter(request, "message-input", "");
+    //Add new data to data structure
+    comments.add(new Comment(name, message));
+
+    // Respond with the result.
+    response.setContentType("text/html;");
+    response.getWriter().println(name + ": your message, " + message + ", has been added!");
+  }
+
+  /**
+   * @return the request parameter, or the default value if the parameter
+   *         was not specified by the client
+   */
+  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+    String value = request.getParameter(name);
+    if (value == null) {
+      return defaultValue;
+    }
+    return value;
+  }
 
 
   @Override
