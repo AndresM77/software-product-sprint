@@ -13,9 +13,13 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -44,16 +48,27 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form.
-    String name = getParameter(request, "name-input", "");
+    String author = getParameter(request, "name-input", "");
     String message = getParameter(request, "message-input", "");
     //Add new data to data structure
-    comments.add(new Comment(name, message));
+    comments.add(new Comment(author, message));
+    //Taking system time for keepijg track of timestamps of comments
+    long timestamp = System.currentTimeMillis();
+
+    //Creating Datastore Entity
+    Entity taskEntity = new Entity("Comment");
+    taskEntity.setProperty("author", author);
+    taskEntity.setProperty("message", message);
+    taskEntity.setProperty("timestamp", timestamp);
+    //Storing the new comment
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(taskEntity);
 
     //Redirecting user back to current page
     response.sendRedirect(".");
     // Respond with the result on /data page
     response.setContentType("text/html;");
-    response.getWriter().println(name + ": your message, " + message + ", has been added!");
+    response.getWriter().println(author + ": your message, " + message + ", has been added!");
   }
 
   /**
