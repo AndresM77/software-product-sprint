@@ -12,12 +12,49 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+/*
+* Obtains data from server, puts it into specified container
+*/
+function fetchData() {
+  fetch('/data').then(response => response.text()).then((data) => {
+    document.getElementById('data-container').innerText = data;
+  });
+}
+
+function fetchComments() {
+  fetch('/data').then(response => response.json()).then((commentData) => {
+    
+    //Test console log statements
+    console.log("Hi")
+    console.log(commentData);
+    
+    //Loops through elements of json object to get every comment
+    const comments = document.getElementById('comment-container');
+    comments.innerHTML = '';
+    for(i = 0; i < commentData.length; i++) {
+         comments.appendChild(
+         createListElement('Name: ' + commentData[i].author));
+         comments.appendChild(
+         createListElement('Message: ' + commentData[i].message));
+    }
+    });
+}
+    
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+
 /**
  * Adds a random greeting to the page.
  */
 function addRandomGreeting() {
   const greetings =
-      ['The passage of time is an illusion and life is a masoleum',
+      ['The passage of time is an illusion and life is a mausoleum',
        'Better to write for yourself and have no public than to write for the public and have no self',
         'Nothing happens unless first a dream',
         'Every failure is another step towards success'];
