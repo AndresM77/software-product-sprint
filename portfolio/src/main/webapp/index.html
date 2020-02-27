@@ -94,6 +94,16 @@
       <h2>Comments</h2>
       <button onclick="fetchComments()">Fetch</button>
       <div id="comment-container"></div>
+      <h3>Add a Comment</h3>
+      <form action="/data" method="POST">
+        <p>Enter your name: </p>
+        <textarea name="name-input">name</textarea>
+        <br/><br/>
+        <p>Enter your comment: </p>
+        <textarea name="message-input">default message</textarea>
+        <br/><br/>
+        <input type="submit" />
+      </form>
       <h2>Some Quotes I Like</h2>
       <button onclick="addRandomGreeting()">Generate</button>
       <div id="greeting-container"></div>
