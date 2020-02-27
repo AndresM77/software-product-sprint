@@ -22,6 +22,33 @@ function fetchData() {
   });
 }
 
+function fetchComments() {
+  fetch('/data').then(response => response.json()).then((commentData) => {
+    
+    //Test console log statements
+    console.log("Hi")
+    console.log(commentData);
+    
+    //Loops through elements of json object to get every comment
+    const comments = document.getElementById('comment-container');
+    comments.innerHTML = '';
+    for(i = 0; i < commentData.length; i++) {
+         comments.appendChild(
+         createListElement('Name: ' + commentData[i].author));
+         comments.appendChild(
+         createListElement('Message: ' + commentData[i].message));
+    }
+    });
+}
+    
+/** Creates an <li> element containing text. */
+function createListElement(text) {
+  const liElement = document.createElement('li');
+  liElement.innerText = text;
+  return liElement;
+}
+
+
 /**
  * Adds a random greeting to the page.
  */

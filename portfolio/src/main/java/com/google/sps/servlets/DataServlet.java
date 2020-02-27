@@ -13,8 +13,9 @@
 // limitations under the License.
 
 package com.google.sps.servlets;
-
+import com.google.gson.Gson;
 import java.io.IOException;
+import java.util.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,20 +25,52 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-  private List<String> comments;
+  //Creating an arraylist with my own created comment object
+  private ArrayList<Comment> comments;
 
+
+  //Initializing variables with manual test data
   @Override
   public void init() {
     comments = new ArrayList<>();
-    comments.add("Comment for testing 1");
-    comments.add("Comment for testing 2");
-    comments.add("Comment for testing 3");
+    comments.add(new Comment("Joe", "test1"));
+    comments.add(new Comment("Joe", "test2"));
+    comments.add(new Comment("Joe", "test3"));
+    comments.add(new Comment("Joe", "test4"));
+    comments.add(new Comment("Joe", "test5"));
+    comments.add(new Comment("Joe", "test6"));
   }
 
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("Andres Montoya-Aristizabal -- 20 years old -- Colombian -- Sophomore studying Physics and Computer Science at Duke University");
+    //Using Gson to convert Comment object to json
+    Gson gson = new Gson();
+    String json = gson.toJson(comments);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+  }
+
+  public class Comment {
+    // Private variables which hold comment data
+    private String author;
+    private String message;
+    
+    // This constructor has two parameters: author and message.
+    public Comment(String a, String m) {
+      author = a;
+      message = m;
+    }
+
+    //Getter function to obtain author data
+    public String getAuthor() {
+        return author;
+    }
+
+    //Getter function to obtain message data
+    public String getMessage() {
+        return message;
+    }
+
   }
 }
