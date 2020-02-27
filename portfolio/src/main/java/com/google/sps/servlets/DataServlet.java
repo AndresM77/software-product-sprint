@@ -49,7 +49,9 @@ public class DataServlet extends HttpServlet {
     //Add new data to data structure
     comments.add(new Comment(name, message));
 
-    // Respond with the result.
+    //Redirecting user back to current page
+    response.sendRedirect(".");
+    // Respond with the result on /data page
     response.setContentType("text/html;");
     response.getWriter().println(name + ": your message, " + message + ", has been added!");
   }
