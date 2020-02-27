@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -50,8 +53,6 @@ public class DataServlet extends HttpServlet {
     // Get the input from the form.
     String author = getParameter(request, "name-input", "");
     String message = getParameter(request, "message-input", "");
-    //Add new data to data structure
-    comments.add(new Comment(author, message));
     //Taking system time for keepijg track of timestamps of comments
     long timestamp = System.currentTimeMillis();
 
@@ -86,9 +87,24 @@ public class DataServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //Loading data from datastore
+    Query query = new Query("Comment").addSort("timestamp", SortDirection.ASCENDING);
+
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    PreparedQuery results = datastore.prepare(query);
+
+    ArrayList<Comment> output = new ArrayList<>(comments);
+    for (Entity entity : results.asIterable()) {
+      String author = (String) entity.getProperty("author");
+      String message = (String) entity.getProperty("message");
+
+      Comment comment = new Comment(author, message);
+      output.add(comment);
+    }
+
     //Using Gson to convert Comment object to json
     Gson gson = new Gson();
-    String json = gson.toJson(comments);
+    String json = gson.toJson(output);
     response.setContentType("application/json;");
     response.getWriter().println(json);
   }
