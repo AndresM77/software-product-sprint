@@ -12,6 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
+/*
+* Obtains data from server, puts it into specified container
+*/
+function fetchData() {
+  fetch('/data').then(response => response.text()).then((data) => {
+    document.getElementById('data-container').innerText = data;
+  });
+}
+
 /**
  * Adds a random greeting to the page.
  */
