@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,12 +42,12 @@ public class DataServlet extends HttpServlet {
   @Override
   public void init() {
     comments = new ArrayList<>();
-    comments.add(new Comment("Joe", "test1"));
-    comments.add(new Comment("Joe", "test2"));
-    comments.add(new Comment("Joe", "test3"));
-    comments.add(new Comment("Joe", "test4"));
-    comments.add(new Comment("Joe", "test5"));
-    comments.add(new Comment("Joe", "test6"));
+    comments.add(new Comment("Joe", "test1", "email@email.com"));
+    comments.add(new Comment("Joe", "test2", "email@email.com"));
+    comments.add(new Comment("Joe", "test3", "email@email.com"));
+    comments.add(new Comment("Joe", "test4", "email@email.com"));
+    comments.add(new Comment("Joe", "test5", "email@email.com"));
+    comments.add(new Comment("Joe", "test6", "email@email.com"));
   }
   
   @Override
@@ -56,8 +58,16 @@ public class DataServlet extends HttpServlet {
     //Taking system time for keepijg track of timestamps of comments
     long timestamp = System.currentTimeMillis();
 
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect(".");
+      return;
+    }
+
+    String email = userService.getCurrentUser().getEmail();
     //Creating Datastore Entity
     Entity taskEntity = new Entity("Comment");
+    taskEntity.setProperty("email", email);
     taskEntity.setProperty("author", author);
     taskEntity.setProperty("message", message);
     taskEntity.setProperty("timestamp", timestamp);
@@ -97,8 +107,9 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
       String author = (String) entity.getProperty("author");
       String message = (String) entity.getProperty("message");
+      String email = (String) entity.getProperty("email");
 
-      Comment comment = new Comment(author, message);
+      Comment comment = new Comment(author, message, email);
       output.add(comment);
     }
 
@@ -113,11 +124,13 @@ public class DataServlet extends HttpServlet {
     // Private variables which hold comment data
     private String author;
     private String message;
+    private String email;
     
     // This constructor has two parameters: author and message.
-    public Comment(String a, String m) {
+    public Comment(String a, String m, String e) {
       author = a;
       message = m;
+      email = e;
     }
 
     //Getter function to obtain author data
@@ -130,5 +143,8 @@ public class DataServlet extends HttpServlet {
         return message;
     }
 
+    public String getEmail() {
+        return email;
+    }
   }
 }

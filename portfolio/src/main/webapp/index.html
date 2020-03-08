@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="fetchStatus()">
     <div id="content">
       <h1 id="header" >Andres's Portfolio</h1>
       <img src="/images/LinkedinProfile.jpg"/>
@@ -91,19 +91,21 @@
               Email: <a href="mailto:andres@triplean.com">andres@triplean.com</a>
           </li>
       </ul>
+      <div id="login-container"></div>
       <h2>Comments</h2>
-      <button onclick="fetchComments()">Fetch</button>
       <div id="comment-container"></div>
-      <h3>Add a Comment</h3>
-      <form action="/data" method="POST">
-        <p>Enter your name: </p>
-        <textarea name="name-input">name</textarea>
-        <br/><br/>
-        <p>Enter your comment: </p>
-        <textarea name="message-input">default message</textarea>
-        <br/><br/>
-        <input type="submit" />
-      </form>
+      <div id="comment-form">
+        <h3>Add a Comment</h3>
+        <form action="/data" method="POST">
+            <p>Enter your name: </p>
+            <textarea name="name-input">name</textarea>
+            <br/><br/>
+            <p>Enter your comment: </p>
+            <textarea name="message-input">default message</textarea>
+            <br/><br/>
+            <input type="submit" />
+        </form>
+      </div>
       <h2>Some Quotes I Like</h2>
       <button onclick="addRandomGreeting()">Generate</button>
       <div id="greeting-container"></div>

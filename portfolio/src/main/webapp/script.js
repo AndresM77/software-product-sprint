@@ -12,16 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-/*
-* Obtains data from server, puts it into specified container
-*/
-function fetchData() {
-  fetch('/data').then(response => response.text()).then((data) => {
-    document.getElementById('data-container').innerText = data;
-  });
-}
-
 function fetchComments() {
   fetch('/data').then(response => response.json()).then((commentData) => {
     
@@ -37,8 +27,31 @@ function fetchComments() {
          createListElement('Name: ' + commentData[i].author));
          comments.appendChild(
          createListElement('Message: ' + commentData[i].message));
+         comments.appendChild(
+         createListElement('Email: ' + commentData[i].email));
     }
     });
+}
+
+function fetchLogin() {
+    fetch('/login').then(response => response.text()).then((loginData) => {
+        const login_div = document.getElementById('login-container');
+        login_div.innerHTML = loginData;
+    });
+}
+
+function fetchStatus() {
+    fetch('/status').then(response => response.text()).then((status) => {
+        str1 = "true";
+        if (str1.localeCompare(status.trim()) == 0) {
+            document.getElementById("comment-form").style.display = "block";
+        } else {
+            document.getElementById("comment-form").style.display = "none";
+        }
+    });
+    
+    fetchLogin();
+    fetchComments();
 }
     
 /** Creates an <li> element containing text. */
