@@ -16,7 +16,7 @@ public class StatusServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     UserService userService = UserServiceFactory.getUserService();
-    response.setContentType("text/html;");
+    response.setContentType("text;");
     response.getWriter().println(userService.isUserLoggedIn());
   }
   
