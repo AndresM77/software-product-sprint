@@ -12,16 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-/*
-* Obtains data from server, puts it into specified container
-*/
-function fetchData() {
-  fetch('/data').then(response => response.text()).then((data) => {
-    document.getElementById('data-container').innerText = data;
-  });
-}
-
 function fetchComments() {
   fetch('/data').then(response => response.json()).then((commentData) => {
     
@@ -38,6 +28,19 @@ function fetchComments() {
          comments.appendChild(
          createListElement('Message: ' + commentData[i].message));
     }
+    });
+}
+
+function fetchLogin() {
+  fetch('/login').then(response => response.text()).then((loginData) => {
+    const login_div = document.getElementById('login-container');
+    login_div.innerHTML = loginData;
+  });
+}
+
+function fetchStatus() {
+    fetch('/status').then(response => response.text()).then((status) => {
+        console.log(status);
     });
 }
     
